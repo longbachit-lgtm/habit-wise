@@ -21,7 +21,7 @@ export default async function Home() {
         <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-orange-300/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-amber-200/30 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse" style={{ animationDelay: '4s' }}></div>
 
-        <div className="container px-4 md:px-6 relative z-10">
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4 gap-2">
               <Flame className="h-4 w-4" />
@@ -48,7 +48,7 @@ export default async function Home() {
 
       {/* Features */}
       <section className="w-full py-16 md:py-24 bg-white/50 backdrop-blur-sm border-t">
-        <div className="container px-4 md:px-6">
+        <div className="container mx-auto px-4 md:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Trải nghiệm theo dõi thói quen tuyệt vời</h2>
           </div>

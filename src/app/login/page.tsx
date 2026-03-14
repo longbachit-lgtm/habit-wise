@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Flame } from 'lucide-react'
+import { Flame, Mail, Lock } from 'lucide-react'
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ message?: string }> }) {
   const supabase = await createClient()
@@ -79,26 +79,33 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             )}
             <div className="grid gap-2">
               <Label htmlFor="email" className="font-semibold text-foreground/80">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="m@example.com"
-                className="h-12 rounded-xl bg-white focus-visible:ring-primary/40 border-border/50 shadow-sm"
-                required
-              />
+              <div className="relative">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/60" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  className="h-12 pl-11 rounded-xl bg-orange-50/40 focus-visible:ring-primary/40 border-border/50 shadow-sm"
+                  required
+                />
+              </div>
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password" className="font-semibold text-foreground/80">Mật khẩu</Label>
               </div>
-              <Input 
-                id="password" 
-                name="password" 
-                type="password" 
-                className="h-12 rounded-xl bg-white focus-visible:ring-primary/40 border-border/50 shadow-sm"
-                required 
-              />
+              <div className="relative">
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/60" />
+                <Input 
+                  id="password" 
+                  name="password" 
+                  type="password" 
+                  placeholder="••••••••"
+                  className="h-12 pl-11 rounded-xl bg-orange-50/40 focus-visible:ring-primary/40 border-border/50 shadow-sm"
+                  required 
+                />
+              </div>
             </div>
             <div className="flex flex-col gap-3 mt-4">
               <Button formAction={signIn} type="submit" className="w-full h-12 rounded-full font-bold shadow-md shadow-primary/20 text-md">

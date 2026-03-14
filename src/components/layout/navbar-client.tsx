@@ -20,7 +20,7 @@ function NavbarClient({ isLoggedIn }: NavbarClientProps) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur-lg">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="h-9 w-9 rounded-full bg-primary flex items-center justify-center">
             <Flame className="h-5 w-5 text-primary-foreground" />

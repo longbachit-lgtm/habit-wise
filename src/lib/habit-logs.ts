@@ -3,6 +3,8 @@
 import { createClient } from './supabase/server'
 import { HabitLog } from '@/types/habits'
 
+import { revalidatePath } from 'next/cache'
+
 export async function checkIn(habitId: string, dateStr: string, completed: boolean, value: number = 0): Promise<boolean> {
     const supabase = await createClient()
 
@@ -23,6 +25,11 @@ export async function checkIn(habitId: string, dateStr: string, completed: boole
         console.error(`Error checking in habit ${habitId} for date ${dateStr}:`, error)
         return false
     }
+
+    // Revalidate paths to update UI real-time
+    revalidatePath('/dashboard')
+    revalidatePath('/habits')
+    revalidatePath(`/habits/${habitId}`)
 
     return true
 }
