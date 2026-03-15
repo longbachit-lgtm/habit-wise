@@ -149,6 +149,16 @@ export default async function DashboardPage() {
           {/* Daily Check-in */}
           <div>
             <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
+            {/* Motivational Quote - Mobile */}
+            <Card className="bg-accent/30 border-primary/10 overflow-hidden relative mb-4">
+              <CardContent className="p-4 sm:p-5">
+                <Quote className="h-6 w-6 text-primary/20 absolute top-3 right-3 sm:top-4 sm:right-4" />
+                <p className="text-sm italic text-foreground/80 leading-relaxed mb-2 pr-6">
+                  &ldquo;{todayQuote.text}&rdquo;
+                </p>
+                <p className="text-xs font-semibold text-muted-foreground">— {todayQuote.author}</p>
+              </CardContent>
+            </Card>
             <DailyCheckIn habits={habitsWithLogs} />
           </div>
         </div>
@@ -215,20 +225,19 @@ export default async function DashboardPage() {
 
           {/* Daily Check-in - desktop only */}
           <div className="hidden lg:block">
-            <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
+            <h2 className="text-lg font-bold tracking-tight mb-4">BẮT ĐẦU NÀO</h2>
+            {/* Motivational Quote - Desktop */}
+            <Card className="bg-accent/30 border-primary/10 overflow-hidden relative mb-4">
+              <CardContent className="p-4 sm:p-5">
+                <Quote className="h-6 w-6 text-primary/20 absolute top-3 right-3 flex-shrink-0" />
+                <p className="text-sm italic text-foreground/80 leading-relaxed mb-2 pr-6">
+                  &ldquo;{todayQuote.text}&rdquo;
+                </p>
+                <p className="text-xs font-semibold text-muted-foreground">— {todayQuote.author}</p>
+              </CardContent>
+            </Card>
             <DailyCheckIn habits={habitsWithLogs} />
           </div>
-
-          {/* Motivational Quote */}
-          <Card className="bg-accent/30 border-primary/10 overflow-hidden relative">
-            <CardContent className="p-6">
-              <Quote className="h-8 w-8 text-primary/20 absolute top-4 right-4" />
-              <p className="text-sm italic text-foreground/80 leading-relaxed mb-3">
-                &ldquo;{todayQuote.text}&rdquo;
-              </p>
-              <p className="text-xs font-semibold text-muted-foreground">— {todayQuote.author}</p>
-            </CardContent>
-          </Card>
 
           {/* Mobile: Add habit button */}
           <Link href="/habits/new" className="lg:hidden block">
