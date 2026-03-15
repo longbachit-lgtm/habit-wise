@@ -95,8 +95,29 @@ export default async function DashboardPage() {
           </p>
         </div>
         
+        {/* Mobile Achievement Card (Shown only on mobile, above Progress) */}
+        {bestCurrentStreak > 0 && (
+          <div className="w-full lg:hidden block">
+            <Card className="bg-gradient-to-br from-primary to-amber-600 text-primary-foreground border-0 shadow-lg shadow-primary/20 overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-lg mb-3">Thành tích mới</h3>
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                    <Trophy className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm opacity-90">Kỷ lục mới!</p>
+                    <p className="font-bold text-lg">{bestCurrentStreak} ngày liên tiếp {bestStreakHabit}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Progress Card (Mobile & Desktop Header) */}
         {totalHabits > 0 && (
-          <div className="flex items-center gap-4 bg-primary/5 border border-primary/15 rounded-2xl px-6 py-4">
+          <div className="w-[calc(66.67%-30px)] md:w-auto flex items-center gap-4 bg-primary/5 border border-primary/15 rounded-2xl px-6 py-4">
             {/* SVG Circular Progress */}
             <div className="relative w-16 h-16 flex-shrink-0">
               <svg className="w-16 h-16" viewBox="0 0 100 100">
@@ -126,43 +147,6 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Mobile-first: Achievement + Check-in shown first on mobile */}
-        <div className="lg:hidden space-y-6">
-          {/* Achievement Card */}
-          {bestCurrentStreak > 0 && (
-            <Card className="bg-gradient-to-br from-primary to-amber-600 text-primary-foreground border-0 shadow-lg shadow-primary/20 overflow-hidden">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-lg mb-3">Thành tích mới</h3>
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                    <Trophy className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm opacity-90">Kỷ lục mới!</p>
-                    <p className="font-bold text-lg">{bestCurrentStreak} ngày liên tiếp {bestStreakHabit}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Daily Check-in */}
-          <div>
-            <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
-            {/* Motivational Quote - Mobile */}
-            <Card className="bg-accent/30 border-primary/10 overflow-hidden relative mb-4">
-              <CardContent className="p-4 sm:p-5">
-                <Quote className="h-6 w-6 text-primary/20 absolute top-3 right-3 sm:top-4 sm:right-4" />
-                <p className="text-sm italic text-foreground/80 leading-relaxed mb-2 pr-6">
-                  &ldquo;{todayQuote.text}&rdquo;
-                </p>
-                <p className="text-xs font-semibold text-muted-foreground">— {todayQuote.author}</p>
-              </CardContent>
-            </Card>
-            <DailyCheckIn habits={habitsWithLogs} />
-          </div>
-        </div>
-
         {/* Left: Habits */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
@@ -230,6 +214,22 @@ export default async function DashboardPage() {
             <Card className="bg-accent/30 border-primary/10 overflow-hidden relative mb-4">
               <CardContent className="p-4 sm:p-5">
                 <Quote className="h-6 w-6 text-primary/20 absolute top-3 right-3 flex-shrink-0" />
+                <p className="text-sm italic text-foreground/80 leading-relaxed mb-2 pr-6">
+                  &ldquo;{todayQuote.text}&rdquo;
+                </p>
+                <p className="text-xs font-semibold text-muted-foreground">— {todayQuote.author}</p>
+              </CardContent>
+            </Card>
+            <DailyCheckIn habits={habitsWithLogs} />
+          </div>
+
+          {/* Daily Check-in - mobile only (Moved here from hidden block) */}
+          <div className="lg:hidden block">
+            <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
+            {/* Motivational Quote - Mobile */}
+            <Card className="bg-accent/30 border-primary/10 overflow-hidden relative mb-4">
+              <CardContent className="p-4 sm:p-5">
+                <Quote className="h-6 w-6 text-primary/20 absolute top-3 right-3 sm:top-4 sm:right-4" />
                 <p className="text-sm italic text-foreground/80 leading-relaxed mb-2 pr-6">
                   &ldquo;{todayQuote.text}&rdquo;
                 </p>
