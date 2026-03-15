@@ -36,7 +36,17 @@ export async function getHabit(id: string): Promise<Habit | null> {
     return data as Habit
 }
 
-export type CreateHabitPayload = Omit<Habit, 'id' | 'user_id' | 'created_at'>
+export interface CreateHabitPayload {
+    name: string
+    description: string
+    target_days: number
+    type: HabitType
+    color: string
+    icon: string
+    diary_note?: string | null
+    target_value?: number
+    unit?: string | null
+}
 
 export async function createHabit(payload: CreateHabitPayload): Promise<Habit | null> {
     const supabase = await createClient()
@@ -44,14 +54,23 @@ export async function createHabit(payload: CreateHabitPayload): Promise<Habit | 
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return null
 
+    // Only send fields that have values to avoid schema cache errors
+    const insertData: Record<string, unknown> = {
+        name: payload.name,
+        description: payload.description,
+        target_days: payload.target_days,
+        type: payload.type,
+        color: payload.color,
+        icon: payload.icon,
+        user_id: user.id
+    }
+    if (payload.diary_note !== undefined) insertData.diary_note = payload.diary_note
+    if (payload.target_value !== undefined) insertData.target_value = payload.target_value
+    if (payload.unit !== undefined) insertData.unit = payload.unit
+
     const { data, error } = await supabase
         .from('habits')
-        .insert([
-            {
-                ...payload,
-                user_id: user.id
-            }
-        ])
+        .insert([insertData])
         .select()
         .single()
 
@@ -68,9 +87,17 @@ export type UpdateHabitPayload = Partial<CreateHabitPayload>
 export async function updateHabit(id: string, payload: UpdateHabitPayload): Promise<Habit | null> {
     const supabase = await createClient()
 
+    // Filter out undefined values to avoid sending non-existent columns
+    const updateData: Record<string, unknown> = {}
+    for (const [key, value] of Object.entries(payload)) {
+        if (value !== undefined) {
+            updateData[key] = value
+        }
+    }
+
     const { data, error } = await supabase
         .from('habits')
-        .update(payload)
+        .update(updateData)
         .eq('id', id)
         .select()
         .single()

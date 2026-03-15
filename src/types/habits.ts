@@ -9,6 +9,9 @@ export interface Habit {
     target_days: number
     icon: string
     color: string
+    diary_note: string | null
+    target_value: number
+    unit: string | null
     created_at: string
 }
 

@@ -19,6 +19,22 @@ const quotes = [
   { text: "Mỗi ngày mới là một cơ hội để thay đổi cuộc đời bạn.", author: "Khuyết danh" },
   { text: "Kỷ luật là cầu nối giữa mục tiêu và thành tựu.", author: "Jim Rohn" },
   { text: "Sự kiên trì là chìa khóa mở cánh cửa thành công.", author: "Khuyết danh" },
+  { text: "Đừng chờ đợi. Thời gian không bao giờ là 'vừa đúng'.", author: "Napoleon Hill" },
+  { text: "Cách duy nhất để làm những công việc vĩ đại là yêu những gì bạn làm.", author: "Steve Jobs" },
+  { text: "Một ngàn dặm hành trình bắt đầu từ một bước đi.", author: "Lão Tử" },
+  { text: "Sự khác biệt giữa những người thành công và những người thất bại không phải là ở sức mạnh, kiến thức hay sự hiểu biết - mà chính là ở ý chí.", author: "Vince Lombardi" },
+  { text: "Đừng đo sự thành công bằng những gì bạn đạt được, mà bằng những trở ngại bạn đã vượt qua.", author: "Booker T. Washington" },
+  { text: "Bạn không thể thay đổi điểm bắt đầu, nhưng bạn có thể bắt đầu ngay từ bây giờ và thay đổi điểm kết thúc.", author: "C.S. Lewis" },
+  { text: "Mọi thứ dường như luôn là không thể cho đến khi nó được hoàn thành.", author: "Nelson Mandela" },
+  { text: "Năng lực của bạn sẽ phát triển khi bạn đối mặt với những thử thách vượt quá khả năng hiện tại.", author: "Khuyết danh" },
+  { text: "Chất lượng cuộc sống của bạn được quyết định bởi chất lượng của những câu hỏi bạn tự đặt ra cho chính mình.", author: "Tony Robbins" },
+  { text: "Bạn không cần phải vĩ đại để bắt đầu, nhưng bạn phải bắt đầu để trở nên vĩ đại.", author: "Zig Ziglar" },
+  { text: "Người duy nhất bạn nên cố gắng để giỏi hơn chính là bạn của ngày hôm qua.", author: "Khuyết danh" },
+  { text: "Những điều tốt đẹp đến với những ai biết chờ đợi. Những điều lớn lao đến với những người nhấc mông lên và tự mình làm mọi thứ.", author: "Khuyết danh" },
+  { text: "Tôi học được rằng lòng can đảm không phải là không có sự sợ hãi, mà là sự chiến thắng nó.", author: "Nelson Mandela" },
+  { text: "Nếu bạn không xây dựng ước mơ của mình, người khác sẽ thuê bạn để xây dựng ước mơ của họ.", author: "Tony Gaskins" },
+  { text: "Chẳng có gì là quá muộn để trở thành người mà bạn muốn trở thành.", author: "George Eliot" },
+  { text: "Dù bạn nghĩ rằng bạn có thể hay không thể, bạn đều đúng.", author: "Henry Ford" }
 ]
 
 function getGreeting(): string {

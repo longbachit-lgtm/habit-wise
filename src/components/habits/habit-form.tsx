@@ -36,18 +36,28 @@ export function HabitForm({ initialData }: HabitFormProps) {
     
     const formData = new FormData(e.currentTarget)
     
-    const payload = {
+    const targetValueStr = formData.get('target_value') as string
+    const targetValue = targetValueStr ? parseInt(targetValueStr, 10) : 1
+    const habitType = formData.get('type') as HabitType
+    
+    const payload: Record<string, unknown> = {
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       target_days: parseInt(formData.get('target_days') as string, 10),
-      type: formData.get('type') as HabitType,
+      type: habitType,
       color: formData.get('color') as string || 'blue',
-      icon: initialData?.icon || 'CheckCircle'
+      icon: initialData?.icon || 'CheckCircle',
+    }
+
+    // Only include numeric fields when type is numeric
+    if (habitType === 'numeric') {
+      payload.target_value = targetValue
+      payload.unit = formData.get('unit') as string || ''
     }
 
     try {
       if (isEditing && initialData) {
-        const updatedHabit = await updateHabit(initialData.id, payload)
+        const updatedHabit = await updateHabit(initialData.id, payload as any)
         if (updatedHabit) {
           toast.success('Cập nhật thử thách thành công!')
           router.push('/dashboard')
@@ -56,7 +66,7 @@ export function HabitForm({ initialData }: HabitFormProps) {
           toast.error('Lỗi khi cập nhật thử thách.')
         }
       } else {
-        const newHabit = await createHabit(payload)
+        const newHabit = await createHabit(payload as any)
         if (newHabit) {
           toast.success('Tạo thử thách thành công!')
           router.push('/dashboard')
@@ -130,7 +140,50 @@ export function HabitForm({ initialData }: HabitFormProps) {
               </Select>
             </div>
             
-            <input type="hidden" name="type" value="checkbox" />
+            <div className="space-y-3 md:col-span-2">
+              <Label htmlFor="type" className="text-sm font-semibold">Loại Thói Quen</Label>
+              <Select 
+                name="type" 
+                defaultValue={initialData?.type || "checkbox"}
+                onValueChange={(val) => {
+                  const el = document.getElementById("numeric-inputs")
+                  if (el) el.style.display = val === "numeric" ? "grid" : "none"
+                }}
+              >
+                <SelectTrigger className="h-12 rounded-xl bg-muted/20 border-border/60 focus:ring-primary/30">
+                  <SelectValue placeholder="Chọn loại thói quen" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="checkbox" className="rounded-lg">Theo dõi điểm danh (Hoàn thành / Chưa hoàn thành)</SelectItem>
+                  <SelectItem value="numeric" className="rounded-lg">Theo dõi số lượng (VD: Đọc 50 trang sách, Chạy 5km)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div id="numeric-inputs" className="md:col-span-2 grid-cols-1 md:grid-cols-2 gap-6" style={{ display: initialData?.type === "numeric" ? "grid" : "none" }}>
+              <div className="space-y-3">
+                <Label htmlFor="target_value" className="text-sm font-semibold">Số lượng mục tiêu mỗi ngày <span className="text-destructive">*</span></Label>
+                <Input 
+                  id="target_value" 
+                  name="target_value" 
+                  type="number" 
+                  min="1" 
+                  defaultValue={initialData?.target_value || 1}
+                  className="h-12 rounded-xl bg-muted/20 border-border/60 focus-visible:ring-primary/30"
+                />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="unit" className="text-sm font-semibold">Đơn vị (VD: Trang, km, Phút) <span className="text-destructive">*</span></Label>
+                <Input 
+                  id="unit" 
+                  name="unit" 
+                  type="text" 
+                  defaultValue={initialData?.unit || ""}
+                  placeholder="VD: Trang, km, Lít"
+                  className="h-12 rounded-xl bg-muted/20 border-border/60 focus-visible:ring-primary/30"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="space-y-3">

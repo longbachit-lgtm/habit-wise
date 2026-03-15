@@ -10,6 +10,7 @@ import { ArrowLeft, Edit, Trash2, Trophy, Flame, Target, CalendarDays, PartyPopp
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { revalidatePath } from 'next/cache'
+import { JourneyDiary } from '@/components/habits/journey-diary'
 
 export const dynamic = 'force-dynamic'
 
@@ -164,11 +165,13 @@ export default async function HabitDetailPage({ params }: { params: Promise<{ id
               </div>
             </CardContent>
           </Card>
+          
+          <JourneyDiary habitId={habit.id} initialNote={habit.diary_note || null} />
         </div>
 
         {/* Right Column: Calendar */}
-        <div className="md:col-span-2">
-          <Card className="h-full rounded-2xl border-border/60 shadow-sm">
+        <div className="md:col-span-2 space-y-6">
+          <Card className="rounded-2xl border-border/60 shadow-sm">
             <CardHeader className="border-b border-border/40 pb-4 mb-4">
               <CardTitle className="flex items-center gap-2">
                 <CalendarDays className="h-5 w-5 text-primary" />
