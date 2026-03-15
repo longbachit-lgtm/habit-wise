@@ -71,6 +71,20 @@ export function HabitCard({ habit }: HabitCardProps) {
             </div>
           )}
 
+          {/* Quantity indicator for numeric habits */}
+          {habit.type === 'numeric' && (() => {
+            const raw = habit.unit || ''
+            const parts = raw.split('/')
+            const uName = parts[0]?.trim() || ''
+            const freq = parts[1]?.trim() || 'ngày'
+            return (
+              <div className="flex items-center gap-1.5 text-xs text-primary font-semibold mb-3 bg-primary/5 rounded-lg px-2.5 py-1.5 border border-primary/10">
+                <span className="text-sm">{habit.logs.reduce((sum, log) => sum + (log.value || 0), 0)}</span>
+                <span className="text-muted-foreground font-medium">/ {habit.target_value} {uName} mỗi {freq}</span>
+              </div>
+            )
+          })()}
+
           {/* Progress */}
           <div className="flex justify-between text-xs mb-1.5">
             <span className="text-muted-foreground">{completedDays} / {habit.target_days} ngày</span>

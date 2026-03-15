@@ -161,11 +161,14 @@ export function DailyCheckIn({ habits }: DailyCheckInProps) {
                 >
                   {habit.name}
                 </label>
-                {isNumeric && (
-                  <span className="text-[10px] text-muted-foreground mt-1">
-                    {currentValue} / {habit.target_value} {habit.unit}
-                  </span>
-                )}
+                {isNumeric && (() => {
+                  const uParts = (habit.unit || '').split('/')
+                  return (
+                    <span className="text-[10px] text-muted-foreground mt-1">
+                      {currentValue} / {habit.target_value} {uParts[0]?.trim() || ''}
+                    </span>
+                  )
+                })()}
               </div>
             </div>
           )
@@ -178,7 +181,7 @@ export function DailyCheckIn({ habits }: DailyCheckInProps) {
             <DialogTitle>Cập nhật số lượng</DialogTitle>
             <DialogDescription>
               Nhập số lượng bạn đã đạt được cho thói quen <strong>{selectedHabit?.name}</strong> hôm nay.
-              <br/>Mục tiêu: {selectedHabit?.target_value} {selectedHabit?.unit}
+              <br/>Mục tiêu: {selectedHabit?.target_value} {selectedHabit?.unit?.split('/')[0]?.trim() || ''} {selectedHabit?.unit?.includes('/') ? `mỗi ${selectedHabit?.unit?.split('/')[1]?.trim()}` : ''}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">

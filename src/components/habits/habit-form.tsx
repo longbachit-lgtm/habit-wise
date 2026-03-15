@@ -52,7 +52,9 @@ export function HabitForm({ initialData }: HabitFormProps) {
     // Only include numeric fields when type is numeric
     if (habitType === 'numeric') {
       payload.target_value = targetValue
-      payload.unit = formData.get('unit') as string || ''
+      const unitText = (formData.get('unit_text') as string || '').trim()
+      const frequency = (formData.get('frequency') as string || 'ngày').trim()
+      payload.unit = `${unitText}/${frequency}`
     }
 
     try {
@@ -160,9 +162,9 @@ export function HabitForm({ initialData }: HabitFormProps) {
               </Select>
             </div>
 
-            <div id="numeric-inputs" className="md:col-span-2 grid-cols-1 md:grid-cols-2 gap-6" style={{ display: initialData?.type === "numeric" ? "grid" : "none" }}>
+            <div id="numeric-inputs" className="md:col-span-2 grid-cols-1 md:grid-cols-3 gap-6" style={{ display: initialData?.type === "numeric" ? "grid" : "none" }}>
               <div className="space-y-3">
-                <Label htmlFor="target_value" className="text-sm font-semibold">Số lượng mục tiêu mỗi ngày <span className="text-destructive">*</span></Label>
+                <Label htmlFor="target_value" className="text-sm font-semibold">Số lượng mục tiêu <span className="text-destructive">*</span></Label>
                 <Input 
                   id="target_value" 
                   name="target_value" 
@@ -173,15 +175,28 @@ export function HabitForm({ initialData }: HabitFormProps) {
                 />
               </div>
               <div className="space-y-3">
-                <Label htmlFor="unit" className="text-sm font-semibold">Đơn vị (VD: Trang, km, Phút) <span className="text-destructive">*</span></Label>
+                <Label htmlFor="unit_text" className="text-sm font-semibold">Đơn vị <span className="text-destructive">*</span></Label>
                 <Input 
-                  id="unit" 
-                  name="unit" 
+                  id="unit_text" 
+                  name="unit_text" 
                   type="text" 
-                  defaultValue={initialData?.unit || ""}
-                  placeholder="VD: Trang, km, Lít"
+                  defaultValue={initialData?.unit?.split('/')[0]?.trim() || ""}
+                  placeholder="VD: Blog, Trang, km"
                   className="h-12 rounded-xl bg-muted/20 border-border/60 focus-visible:ring-primary/30"
                 />
+              </div>
+              <div className="space-y-3">
+                <Label htmlFor="frequency" className="text-sm font-semibold">Chu kỳ <span className="text-destructive">*</span></Label>
+                <Select name="frequency" defaultValue={initialData?.unit?.includes('/tuần') ? 'tuần' : initialData?.unit?.includes('/tháng') ? 'tháng' : 'ngày'}>
+                  <SelectTrigger className="h-12 rounded-xl bg-muted/20 border-border/60 focus:ring-primary/30">
+                    <SelectValue placeholder="Chọn chu kỳ" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl">
+                    <SelectItem value="ngày" className="rounded-lg">Mỗi ngày</SelectItem>
+                    <SelectItem value="tuần" className="rounded-lg">Mỗi tuần</SelectItem>
+                    <SelectItem value="tháng" className="rounded-lg">Mỗi tháng</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { notFound, redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { ArrowLeft, Edit, Trash2, Trophy, Flame, Target, CalendarDays, PartyPopper, Clock } from 'lucide-react'
+import { ArrowLeft, Edit, Trash2, Trophy, Flame, Target, CalendarDays, PartyPopper, Clock, BarChart3, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { revalidatePath } from 'next/cache'
@@ -38,6 +38,18 @@ export default async function HabitDetailPage({ params }: { params: Promise<{ id
   
   const todayStr = format(new Date(), 'yyyy-MM-dd')
   const isCompletedToday = logs.some(log => log.date === todayStr && log.completed)
+
+  // Quantity stats for numeric habits
+  const isNumeric = habit.type === 'numeric'
+  const totalValue = logs.reduce((sum, log) => sum + (log.value || 0), 0)
+  const todayLog = logs.find(log => log.date === todayStr)
+  const todayValue = todayLog ? todayLog.value : 0
+  // Parse unit: format is 'BLOG/tuần' or 'Trang/ngày'
+  const rawUnit = habit.unit || ''
+  const unitParts = rawUnit.split('/')
+  const unitName = unitParts[0]?.trim() || ''
+  const frequency = unitParts[1]?.trim() || 'ngày'
+  const frequencyLabel = `mỗi ${frequency}`
 
   const toggleToday = async () => {
     'use server'
@@ -135,6 +147,24 @@ export default async function HabitDetailPage({ params }: { params: Promise<{ id
               <CardTitle className="text-lg">Thống kê</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
+              {isNumeric && (
+                <>
+                  <div className="flex justify-between items-center bg-gradient-to-r from-primary/10 to-primary/5 rounded-xl p-3 border border-primary/20">
+                    <div className="flex items-center gap-2 text-foreground">
+                      <BarChart3 className="h-4 w-4 text-primary" />
+                      <span className="text-sm font-semibold">Tổng đã đạt</span>
+                    </div>
+                    <span className="font-extrabold text-lg text-primary">{totalValue} {unitName}</span>
+                  </div>
+                  <div className="flex justify-between items-center bg-background rounded-xl p-3 border border-border/50">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <TrendingUp className="h-4 w-4 text-emerald-500" />
+                      <span className="text-sm font-medium">Hôm nay</span>
+                    </div>
+                    <span className="font-bold text-base">{todayValue} / {habit.target_value} {unitName}</span>
+                  </div>
+                </>
+              )}
               <div className="flex justify-between items-center bg-background rounded-xl p-3 border border-border/50">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <Flame className="h-4 w-4 text-orange-500" />
@@ -154,7 +184,7 @@ export default async function HabitDetailPage({ params }: { params: Promise<{ id
                   <Target className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium">Mục tiêu</span>
                 </div>
-                <span className="font-bold text-base">{habit.target_days} ngày</span>
+                <span className="font-bold text-base">{habit.target_days} ngày{isNumeric ? ` · ${habit.target_value} ${unitName} ${frequencyLabel}` : ''}</span>
               </div>
               <div className="flex justify-between items-center bg-background rounded-xl p-3 border border-border/50">
                 <div className="flex items-center gap-2 text-muted-foreground">
