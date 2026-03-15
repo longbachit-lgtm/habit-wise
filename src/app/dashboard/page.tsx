@@ -38,7 +38,9 @@ const quotes = [
 ]
 
 function getGreeting(): string {
-  const hour = new Date().getHours()
+  // Use Vietnam timezone (UTC+7)
+  const vnTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh', hour: 'numeric', hour12: false })
+  const hour = parseInt(vnTime, 10)
   if (hour < 12) return 'Chào buổi sáng'
   if (hour < 18) return 'Chào buổi chiều'
   return 'Chào buổi tối'
@@ -124,6 +126,33 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Mobile-first: Achievement + Check-in shown first on mobile */}
+        <div className="lg:hidden space-y-6">
+          {/* Achievement Card */}
+          {bestCurrentStreak > 0 && (
+            <Card className="bg-gradient-to-br from-primary to-amber-600 text-primary-foreground border-0 shadow-lg shadow-primary/20 overflow-hidden">
+              <CardContent className="p-6">
+                <h3 className="font-bold text-lg mb-3">Thành tích mới</h3>
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+                    <Trophy className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm opacity-90">Kỷ lục mới!</p>
+                    <p className="font-bold text-lg">{bestCurrentStreak} ngày liên tiếp {bestStreakHabit}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Daily Check-in */}
+          <div>
+            <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
+            <DailyCheckIn habits={habitsWithLogs} />
+          </div>
+        </div>
+
         {/* Left: Habits */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
@@ -164,11 +193,11 @@ export default async function DashboardPage() {
           )}
         </div>
 
-        {/* Right Sidebar */}
+        {/* Right Sidebar (desktop only for achievement + check-in, always for quote) */}
         <div className="space-y-6">
-          {/* Achievement Card */}
+          {/* Achievement Card - desktop only */}
           {bestCurrentStreak > 0 && (
-            <Card className="bg-gradient-to-br from-primary to-amber-600 text-primary-foreground border-0 shadow-lg shadow-primary/20 overflow-hidden">
+            <Card className="hidden lg:block bg-gradient-to-br from-primary to-amber-600 text-primary-foreground border-0 shadow-lg shadow-primary/20 overflow-hidden">
               <CardContent className="p-6">
                 <h3 className="font-bold text-lg mb-3">Thành tích mới</h3>
                 <div className="flex items-center gap-3">
@@ -184,8 +213,8 @@ export default async function DashboardPage() {
             </Card>
           )}
 
-          {/* Daily Check-in */}
-          <div>
+          {/* Daily Check-in - desktop only */}
+          <div className="hidden lg:block">
             <h2 className="text-lg font-bold tracking-tight mb-4">Điểm danh hôm nay</h2>
             <DailyCheckIn habits={habitsWithLogs} />
           </div>
